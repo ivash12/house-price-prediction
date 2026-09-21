@@ -1,5 +1,7 @@
 import pandas as pd
 import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("HousingPrices-Amsterdam-August-2021.csv")
@@ -14,7 +16,24 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random
 print(X_train.describe().transpose())
 
 normalizer = tf.keras.layers.Normalization(axis=-1)
-normalizer.adapt(X_train)
+normalizer.adapt(np.array(X_train))
+X_train_normalized = normalizer(np.array(X_train))
+
+print(X_train_normalized[:5])
+
+linear_model = tf.keras.Sequential([normalizer, tf.keras.layers.Dense(units=1)])
+
+linear_model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    loss='mean_absolute_error')
+
+linear_model.fit(
+    X_train_normalized,
+    y_train,
+    epochs=100,
+    verbose=0,
+    validation_split = 0.2)
+
 
 
 
