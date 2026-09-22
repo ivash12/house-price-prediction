@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("HousingPrices-Amsterdam-August-2021.csv")
 print(df.head())
-
+df = df.dropna()
 y = df.pop("Price")
 X = df[["Area","Room","Lon","Lat"]]
 print(X.head())
@@ -24,15 +24,22 @@ print(X_train_normalized[:5])
 linear_model = tf.keras.Sequential([normalizer, tf.keras.layers.Dense(units=1)])
 
 linear_model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
     loss='mean_absolute_error')
 
-linear_model.fit(
+history = linear_model.fit(
     X_train_normalized,
     y_train,
-    epochs=100,
+    epochs=500,
     verbose=0,
     validation_split = 0.2)
+
+plt.plot(history.history['loss'], label='train loss')
+plt.plot(history.history['val_loss'], label='val loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
 
 
 
