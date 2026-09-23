@@ -20,7 +20,7 @@ normalizer.adapt(np.array(X_train))
 X_train_normalized = normalizer(np.array(X_train))
 
 print(X_train_normalized[:5])
-
+print(y_train[:5])
 linear_model = tf.keras.Sequential([normalizer, tf.keras.layers.Dense(units=1)])
 
 linear_model.compile(
@@ -29,8 +29,8 @@ linear_model.compile(
 
 history = linear_model.fit(
     X_train_normalized,
-    y_train,
-    epochs=500,
+    np.log(y_train),
+    epochs=100,
     verbose=0,
     validation_split = 0.2)
 
