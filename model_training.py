@@ -28,7 +28,7 @@ linear_model.compile(
     loss='mean_absolute_error')
 
 history = linear_model.fit(
-    X_train_normalized,
+    X_train,
     np.log(y_train),
     epochs=100,
     verbose=0,
@@ -41,6 +41,11 @@ plt.ylabel('Loss')
 plt.legend()
 plt.show()
 
+log_preds = linear_model.predict(X_test[:5])
+preds = np.exp(log_preds).flatten()
+
+for predicted, actual in zip(preds, y_test[:5]):
+    print(f"Predicted: €{predicted:,.0f}   Actual: €{actual:,.0f}")
 
 
 
