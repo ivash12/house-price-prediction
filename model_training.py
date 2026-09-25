@@ -21,16 +21,21 @@ X_train_normalized = normalizer(np.array(X_train))
 
 print(X_train_normalized[:5])
 print(y_train[:5])
-linear_model = tf.keras.Sequential([normalizer, tf.keras.layers.Dense(units=1)])
+dnn_model = tf.keras.Sequential([
+    normalizer,
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(units=1)
+])
 
-linear_model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
+dnn_model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
     loss='mean_absolute_error')
 
-history = linear_model.fit(
+history = dnn_model.fit(
     X_train,
     np.log(y_train),
-    epochs=100,
+    epochs=300,
     verbose=0,
     validation_split = 0.2)
 
@@ -41,11 +46,13 @@ plt.ylabel('Loss')
 plt.legend()
 plt.show()
 
-log_preds = linear_model.predict(X_test[:5])
+log_preds = dnn_model.predict(X_test)
 preds = np.exp(log_preds).flatten()
 
-for predicted, actual in zip(preds, y_test[:5]):
-    print(f"Predicted: €{predicted:,.0f}   Actual: €{actual:,.0f}")
+#for predicted, actual in zip(preds, y_test):
+#    print(f"Predicted: €{predicted:,.0f}   Actual: €{actual:,.0f}")
 
 
-
+mae_metric = tf.keras.metrics.MeanAbsoluteError()
+mae_metric.update_state(y_test.values, preds)
+print(f"Test MAE: €{mae_metric.result().numpy():,.0f}")
