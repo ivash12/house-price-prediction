@@ -5,10 +5,17 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("HousingPrices-Amsterdam-August-2021.csv")
-print(df.head())
 df = df.dropna()
+
+centre_lat = 52.3731
+centre_lon = 4.8926
+
+dy = (df["Lat"] - centre_lat) * 111
+dx = (df["Lon"] - centre_lon) * 68
+df["Distance"] = np.sqrt(dx**2 + dy**2)
+
 y = df.pop("Price")
-X = df[["Area","Room","Lon","Lat"]]
+X = df[["Area","Room","Lon","Lat","Distance"]]
 print(X.head())
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=42)
