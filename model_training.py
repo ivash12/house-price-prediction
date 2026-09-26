@@ -35,9 +35,11 @@ dnn_model.compile(
 history = dnn_model.fit(
     X_train,
     np.log(y_train),
-    epochs=300,
+    epochs=500,
     verbose=0,
     validation_split = 0.2)
+
+dnn_model.save("house_price_model.keras")
 
 plt.plot(history.history['loss'], label='train loss')
 plt.plot(history.history['val_loss'], label='val loss')
@@ -48,9 +50,6 @@ plt.show()
 
 log_preds = dnn_model.predict(X_test)
 preds = np.exp(log_preds).flatten()
-
-#for predicted, actual in zip(preds, y_test):
-#    print(f"Predicted: €{predicted:,.0f}   Actual: €{actual:,.0f}")
 
 
 mae_metric = tf.keras.metrics.MeanAbsoluteError()
