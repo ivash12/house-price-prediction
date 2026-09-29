@@ -2,5 +2,5 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-def viewF(request):
-     return render(request, 'predictor/home.html')
+def predict_view(request, city):
+    return render(request, "predictor/predict.html")
