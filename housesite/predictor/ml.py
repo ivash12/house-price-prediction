@@ -15,8 +15,9 @@ def get_distance(lat, lon):
 
 
 def predict_price(area, rooms, lon, lat):
+    market_adjustment_from2021 = 1.3
     distance = get_distance(lat, lon)
     row = np.array([[area, rooms, lon, lat, distance]])
     log_price = model.predict(row)
     price = np.exp(log_price[0][0])
-    return float(price)
+    return float(price) * market_adjustment_from2021

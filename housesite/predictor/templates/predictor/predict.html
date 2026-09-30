@@ -37,7 +37,9 @@
 
     <section id="output">
         <h2>Estimated price</h2>
-        <!-- predicted price goes here -->
+       {% if price %}
+    <p>Estimated price: €{{ price|floatformat:0 }}</p>
+        {% endif %}
     </section>
 </body>
 </html>
