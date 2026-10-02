@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +32,12 @@
     <label for="lon">Longitude:</label>
     <input type="number" id="lon" name="lon" step="any" required value="{{ form_data.lon }}">
 
+    <label for="location-search">Address (testing):</label>
+    <input type="text" id="location-search" placeholder="Start typing an address...">
+    <div id="suggestions"></div>
+    <input type="hidden" id="js-lat">
+    <input type="hidden" id="js-lon">
+
     <button type="submit">Estimate price</button>
 </form>
     </section>
@@ -41,5 +48,6 @@
     <p>Estimated price: €{{ price|floatformat:0 }}</p>
         {% endif %}
     </section>
+<script src="{% static 'predictor/script.js' %}"></script>
 </body>
 </html>
