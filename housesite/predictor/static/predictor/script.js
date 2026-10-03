@@ -5,8 +5,8 @@ const DEBOUNCE_MS = 300;
 
 const searchInput = document.getElementById("location-search");
 const suggestionsBox = document.getElementById("suggestions");
-const latInput = document.getElementById("js-lat");
-const lonInput = document.getElementById("js-lon");
+const latInput = document.getElementById("lat");
+const lonInput = document.getElementById("lon");
 
 let debounceTimer;
 
