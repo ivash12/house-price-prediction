@@ -4,6 +4,23 @@
 <head>
     <meta charset="utf-8">
     <title>Amsterdam House Price Estimator</title>
+    <style>
+    .search-wrapper { position: relative; display: inline-block; }
+    #location-search { width: 350px; }
+    #suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        color: black;
+        border: 1px solid #ccc;
+        z-index: 10;
+    }
+    #suggestions:empty { display: none; }
+    #suggestions div { padding: 8px; cursor: pointer; }
+    #suggestions div:hover { background: #eee; }
+</style>
 </head>
 <body>
     <header>
@@ -33,8 +50,10 @@
     <input type="number" id="lon" name="lon" step="any" required value="{{ form_data.lon }}">
 
     <label for="location-search">Address (testing):</label>
+<div class="search-wrapper">
     <input type="text" id="location-search" placeholder="Start typing an address...">
     <div id="suggestions"></div>
+</div>
     <input type="hidden" id="js-lat">
     <input type="hidden" id="js-lon">
 
