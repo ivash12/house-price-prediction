@@ -8,6 +8,16 @@ df = pd.read_csv("NY-House-Dataset.csv")
 df = df.dropna()
 df = df.drop_duplicates()
 
+#dropping garbage values
+placeholder = 2184.207862
+print(len(df))
+df = df[~np.isclose(df["PROPERTYSQFT"], placeholder)]
+print(len(df))
+
+#drop ultra high and ultra low prices
+df = df[(df["PRICE"] > 100_000) & (df["PRICE"] <= 10_000_000)]
+print(len(df))
+
 centre_lat = 40.7580
 centre_lon = -73.9855
 
@@ -43,7 +53,7 @@ dnn_model.compile(
 history = dnn_model.fit(
     X_train,
     np.log(y_train),
-    epochs=500,
+    epochs=300,
     verbose=0,
     validation_split = 0.2)
 
@@ -63,4 +73,9 @@ preds = np.exp(log_preds).flatten()
 mae_metric = tf.keras.metrics.MeanAbsoluteError()
 mae_metric.update_state(y_test.values, preds)
 print(f"Test MAE: ${mae_metric.result().numpy():,.0f}")
+
+ae = np.abs(preds - y_test.values)
+print("median abs error:", np.median(ae))
+print("median % error:", np.median(ae / y_test.values))
+print("baseline MAE:", np.mean(np.abs(y_test.values - y_train.median())))
 
