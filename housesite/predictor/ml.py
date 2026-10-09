@@ -2,22 +2,49 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-MODEL_PATH = Path(__file__).parent / "house_price_model.keras"
-model = tf.keras.models.load_model(MODEL_PATH)
+BASE_DIR = Path(__file__).parent
 
-centre_lat = 52.3731
-centre_lon = 4.8926
+CITIES = {
+    "amsterdam": {
+        "model": tf.keras.models.load_model(BASE_DIR / "house_price_model.keras"),
+        "features": ["area", "rooms", "lon", "lat", "distance"],
+        "centre": (52.3731, 4.8926),
+        "km_per_deg_lon": 111 * np.cos(np.radians(52.3731)),
+        "market_adjustment": 1.3,
+        "bbox": (4.72, 52.28, 5.04, 52.43),  # west, south, east, north
+    },
+    "new-york": {
+        "model": tf.keras.models.load_model(BASE_DIR / "house_price_model_nyc.keras"),
+        "features": ["beds", "baths", "sqft", "lat", "lon", "distance"],
+        "centre": (40.7580, -73.9855),
+        "km_per_deg_lon": 84,
+        "market_adjustment": 1.0,
+        "bbox": (-74.27, 40.49, -73.68, 40.92),
+    },
+}
 
-def get_distance(lat, lon):
+for name, cfg in CITIES.items():
+    assert cfg["model"].input_shape[1] == len(cfg["features"]), f"{name}: feature count mismatch"
+
+
+def get_distance(city, lat, lon):
+    centre_lat, centre_lon = CITIES[city]["centre"]
     dy = (lat - centre_lat) * 111
-    dx = (lon - centre_lon) * 68
+    dx = (lon - centre_lon) * CITIES[city]["km_per_deg_lon"]
     return np.sqrt(dx ** 2 + dy ** 2)
 
 
-def predict_price(area, rooms, lon, lat):
-    market_adjustment_from2021 = 1.3
-    distance = get_distance(lat, lon)
-    row = np.array([[area, rooms, lon, lat, distance]])
-    log_price = model.predict(row)
+def is_inside_city(city, lat, lon):
+    west, south, east, north = CITIES[city]["bbox"]
+    return west <= lon <= east and south <= lat <= north
+
+
+def predict_price(city, features):
+    cfg = CITIES[city]
+    features["distance"] = get_distance(city, features["lat"], features["lon"])
+    row = np.array([[features[name] for name in cfg["features"]]])
+    log_price = cfg["model"].predict(row)
     price = np.exp(log_price[0][0])
-    return float(price) * market_adjustment_from2021
+    return float(price) * cfg["market_adjustment"]
+
+
