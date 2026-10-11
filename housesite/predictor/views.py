@@ -3,6 +3,7 @@ from django.shortcuts import render
 from predictor.ml import CITIES, predict_price, is_inside_city
 
 CURRENCY = {"amsterdam": "€", "new-york": "$"}
+CITY_NAME = {"amsterdam": "Amsterdam", "new-york": "New York"}
 
 
 def predict_view(request, city):
@@ -28,6 +29,7 @@ def predict_view(request, city):
 
     return render(request, "predictor/predict.html", {
         "city": city,
+        "city_name": CITY_NAME[city],
         "currency": CURRENCY[city],
         "fields": fields,
         "price": price,

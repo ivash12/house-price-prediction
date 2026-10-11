@@ -1,5 +1,4 @@
 const PHOTON_URL = "https://photon.komoot.io/api/";
-const AMSTERDAM_BBOX = "4.72,52.28,5.04,52.43";
 const MIN_CHARS = 3;
 const DEBOUNCE_MS = 300;
 
@@ -8,14 +7,21 @@ const suggestionsBox = document.getElementById("suggestions");
 const latInput = document.getElementById("lat");
 const lonInput = document.getElementById("lon");
 
+const CITIES = {
+    "amsterdam": { name: "Amsterdam", bbox: "4.72,52.28,5.04,52.43", cityFilter: "amsterdam" },
+    "new-york": { name: "New York", bbox: "-74.27,40.49,-73.68,40.92", cityFilter: null },
+};
+const city = CITIES[searchInput.dataset.city];
+
 let debounceTimer;
 
 function clearSuggestions() {
     suggestionsBox.textContent = "";
 }
 
-function isAmsterdam(props) {
-    return props.city && props.city.toLowerCase() === "amsterdam";
+function isInCity(props) {
+    if (!city.cityFilter) return true;
+    return props.city && props.city.toLowerCase() === city.cityFilter;
 }
 
 function buildLabel(props) {
@@ -33,12 +39,12 @@ function showSuggestions(features) {
     clearSuggestions();
 
     const results = features.filter(function (feature) {
-        return isAmsterdam(feature.properties);
+        return isInCity(feature.properties);
     });
 
     if (results.length === 0) {
         const message = document.createElement("div");
-        message.textContent = "No Amsterdam addresses found";
+        message.textContent = "No " + city.name + " addresses found";
         suggestionsBox.appendChild(message);
         return;
     }
@@ -68,7 +74,7 @@ async function fetchSuggestions(query) {
     const params = new URLSearchParams({
         q: query,
         limit: 10,
-        bbox: AMSTERDAM_BBOX,
+        bbox: city.bbox,
     });
 
     try {

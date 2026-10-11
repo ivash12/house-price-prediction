@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Amsterdam House Price Estimator</title>
+    <title>{{ city_name }} House Price Estimator</title>
     <style>
     .search-wrapper { position: relative; display: inline-block; }
     #location-search { width: 350px; }
@@ -20,47 +20,63 @@
     #suggestions:empty { display: none; }
     #suggestions div { padding: 8px; cursor: pointer; }
     #suggestions div:hover { background: #eee; }
+    .error { color: #b00020; }
 </style>
 </head>
 <body>
     <header>
-        <h1>Amsterdam House Price Estimator</h1>
+        <h1>{{ city_name }} House Price Estimator</h1>
         <p>
-            Enter a few details about a property in Amsterdam and get an
+            Enter a few details about a property in {{ city_name }} and get an
             estimated asking price from a neural network trained with TensorFlow.
         </p>
+        <p><a href="/">&larr; Choose another city</a></p>
     </header>
-
 
     <section id="input">
         <h2>Property details</h2>
         <form method="post">
-    {% csrf_token %}
+            {% csrf_token %}
 
-    <label for="area">Area (m²):</label>
-    <input type="number" id="area" name="area" step="1" min="1" required value="{{ form_data.area }}">
+            {% if city == "amsterdam" %}
+                <label for="area">Area (m²):</label>
+                <input type="number" id="area" name="area" step="1" min="1" required value="{{ form_data.area }}">
 
-    <label for="rooms">Rooms:</label>
-    <input type="number" id="rooms" name="rooms" step="1" min="1" required value="{{ form_data.rooms }}">
+                <label for="rooms">Rooms:</label>
+                <input type="number" id="rooms" name="rooms" step="1" min="1" required value="{{ form_data.rooms }}">
+            {% elif city == "new-york" %}
+                <label for="beds">Beds:</label>
+                <input type="number" id="beds" name="beds" step="1" min="0" required value="{{ form_data.beds }}">
 
-    <label for="location-search">Address (testing):</label>
-<div class="search-wrapper">
-    <input type="text" id="location-search" placeholder="Start typing an address...">
-    <div id="suggestions"></div>
-</div>
-    <input type="hidden" id="lat" name="lat" value="{{ form_data.lat }}">
-    <input type="hidden" id="lon" name="lon" value="{{ form_data.lon }}">
+                <label for="baths">Baths:</label>
+                <input type="number" id="baths" name="baths" step="0.5" min="0.5" required value="{{ form_data.baths }}">
 
-    <button type="submit">Estimate price</button>
-</form>
+                <label for="sqft">Area (sq ft):</label>
+                <input type="number" id="sqft" name="sqft" step="1" min="1" required value="{{ form_data.sqft }}">
+            {% endif %}
+
+            <label for="location-search">Address:</label>
+            <div class="search-wrapper">
+                <input type="text" id="location-search" data-city="{{ city }}" placeholder="Start typing an address..." autocomplete="off">
+                <div id="suggestions"></div>
+            </div>
+            <input type="hidden" id="lat" name="lat" value="{{ form_data.lat }}">
+            <input type="hidden" id="lon" name="lon" value="{{ form_data.lon }}">
+
+            <button type="submit">Estimate price</button>
+        </form>
     </section>
 
     <section id="output">
         <h2>Estimated price</h2>
-       {% if price %}
-    <p>Estimated price: €{{ price|floatformat:0 }}</p>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if price %}
+            <p>Estimated price: {{ currency }}{{ price|floatformat:0 }}</p>
         {% endif %}
     </section>
-<script src="{% static 'predictor/script.js' %}"></script>
+
+    <script src="{% static 'predictor/script.js' %}"></script>
 </body>
 </html>
