@@ -9,7 +9,7 @@ CITIES = {
         "model": tf.keras.models.load_model(BASE_DIR / "house_price_model.keras"),
         "features": ["area", "rooms", "lon", "lat", "distance"],
         "centre": (52.3731, 4.8926),
-        "km_per_deg_lon": 111 * np.cos(np.radians(52.3731)),
+        "km_per_deg_lon": 68,
         "market_adjustment": 1.3,
         "bbox": (4.72, 52.28, 5.04, 52.43),  # west, south, east, north
     },
@@ -20,6 +20,14 @@ CITIES = {
         "km_per_deg_lon": 84,
         "market_adjustment": 1.0,
         "bbox": (-74.27, 40.49, -73.68, 40.92),
+    },
+    "paris": {
+        "model": tf.keras.models.load_model(BASE_DIR / "house_price_model_paris.keras"),
+        "features": ["area", "rooms", "lat", "lon", "distance"],
+        "centre": (48.8566, 2.3522),
+        "km_per_deg_lon": 73,
+        "market_adjustment": 1.0,
+        "bbox": (2.224, 48.815, 2.470, 48.902),
     },
 }
 

@@ -16,8 +16,15 @@ counts = df.groupby("id_mutation")["id_mutation"].transform("size")
 df = df[counts == 1]
 print(df.shape)
 
+centre_lat = 48.8566
+centre_lon = 2.3522
+
+dy = (df["latitude"] - centre_lat) * 111
+dx = (df["longitude"] - centre_lon) * 73
+df["Distance"] = np.sqrt(dx**2 + dy**2)
+
 X = df[["surface_reelle_bati", "nombre_pieces_principales",
-        "latitude", "longitude"]]
+        "latitude", "longitude", "Distance"]]
 y = df["valeur_fonciere"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=42)

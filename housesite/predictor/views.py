@@ -2,8 +2,8 @@ from django.http import Http404
 from django.shortcuts import render
 from predictor.ml import CITIES, predict_price, is_inside_city
 
-CURRENCY = {"amsterdam": "€", "new-york": "$"}
-CITY_NAME = {"amsterdam": "Amsterdam", "new-york": "New York"}
+CURRENCY = {"amsterdam": "€", "new-york": "$", "paris": "€"}
+CITY_NAME = {"amsterdam": "Amsterdam", "new-york": "New York", "paris": "Paris"}
 
 
 def predict_view(request, city):

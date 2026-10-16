@@ -53,6 +53,12 @@
 
                 <label for="sqft">Area (sq ft):</label>
                 <input type="number" id="sqft" name="sqft" step="1" min="1" required value="{{ form_data.sqft }}">
+            {% elif city == "paris" %}
+                <label for="area">Area (m²):</label>
+                <input type="number" id="area" name="area" step="1" min="1" required value="{{ form_data.area }}">
+
+                <label for="rooms">Rooms:</label>
+                <input type="number" id="rooms" name="rooms" step="1" min="1" required value="{{ form_data.rooms }}">
             {% endif %}
 
             <label for="location-search">Address:</label>

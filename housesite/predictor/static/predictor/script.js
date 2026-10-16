@@ -10,6 +10,7 @@ const lonInput = document.getElementById("lon");
 const CITIES = {
     "amsterdam": { name: "Amsterdam", bbox: "4.72,52.28,5.04,52.43", cityFilter: "amsterdam" },
     "new-york": { name: "New York", bbox: "-74.27,40.49,-73.68,40.92", cityFilter: null },
+    "paris": { name: "Paris", bbox: "2.224,48.815,2.470,48.902", cityFilter: "paris" },
 };
 const city = CITIES[searchInput.dataset.city];
 
