@@ -21,8 +21,11 @@ property, start typing its address, and get an estimated price.
 3. **Model**: Keras `Sequential` network: `Normalization` layer, two `Dense(64, relu)`
    layers and one output. It is trained on `log(price)` with MAE loss, and predictions are
    converted back with `exp()`.
-4. **Web app**: Django loads all models once at startup. On submit, the view checks that
-   the address is inside the city and passes the features to the model.
+4. **Web app**: the trained weights are exported from Keras to small `.npz` files
+   (`export_weights.py`), and the website runs the network with plain NumPy
+   (normalize → Dense + ReLU → Dense + ReLU → Dense). This gives the same predictions as
+   TensorFlow but keeps the server light enough for free hosting. On submit, the view checks
+   that the address is inside the city and passes the features to the model.
 
 ## Results
 
@@ -42,15 +45,18 @@ house-price-prediction/
 ├── model_training.py          # Amsterdam model
 ├── model_training_nyc.py      # New York model
 ├── model_training_paris.py    # Paris model
-├── requirements.txt
+├── export_weights.py          # converts .keras models to .npz for the website
+├── requirements.txt           # packages for the website
+├── requirements-train.txt     # + TensorFlow, pandas etc. for training
 └── housesite/                 # Django project
     ├── manage.py
     ├── housesite/             # settings, root URLs
     └── predictor/             # the app
-        ├── ml.py              # loads models, runs predictions
+        ├── ml.py              # loads weights, runs predictions with NumPy
         ├── views.py
         ├── urls.py
-        ├── *.keras            # trained models
+        ├── *.keras            # trained Keras models
+        ├── *.npz              # exported weights used by the website
         ├── templates/predictor/        # home, predict, about pages
         └── static/predictor/script.js  # address autocomplete
 ```
@@ -80,6 +86,7 @@ Django needs a secret key to run. It is kept out of the repository, so you need 
 
    ```
    SECRET_KEY=paste-the-generated-key-here
+   DEBUG=True
    ```
 
    Don't add quotes or spaces around `=`. The `.env` file is listed in `.gitignore`, so it
@@ -93,6 +100,17 @@ python manage.py runserver
 ```
 
 Open http://127.0.0.1:8000/
+
+## Deployment
+
+The site is deployed on [Render](https://render.com/) as a Python web service:
+
+- Build command: `pip install -r requirements.txt && python housesite/manage.py collectstatic --noinput`
+- Start command: `gunicorn --chdir housesite housesite.wsgi:application`
+- Environment variable: `SECRET_KEY` (a new random key)
+
+On the free plan the service sleeps after 15 minutes without visitors, so the first page
+load after that can take about a minute.
 
 ## Data sources
 
