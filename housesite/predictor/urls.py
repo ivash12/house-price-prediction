@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path("", views.home),
+    path("about/", views.about),
     path("<str:city>/", views.predict_view),
 ]

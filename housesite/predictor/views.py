@@ -40,3 +40,7 @@ def predict_view(request, city):
 
 def home(request):
     return render(request, "predictor/home.html")
+
+
+def about(request):
+    return render(request, "predictor/about.html")
