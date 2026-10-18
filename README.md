@@ -7,7 +7,7 @@ property, start typing its address, and get an estimated price.
 ## Features
 
 - One TensorFlow model per city, trained on public housing data
-- Django web interface with a city picker and an About page
+- Django web interface with a city picker, city cards and an About section
 - Address autocomplete limited to the chosen city ([Photon](https://photon.komoot.io/), OpenStreetMap data)
 - Engineered feature: distance from the city centre
 
@@ -57,8 +57,8 @@ house-price-prediction/
         ├── urls.py
         ├── *.keras            # trained Keras models
         ├── *.npz              # exported weights used by the website
-        ├── templates/predictor/        # home, predict, about pages
-        └── static/predictor/script.js  # address autocomplete
+        ├── templates/predictor/        # home and city pages
+        └── static/predictor/           # CSS, fonts, images, script.js (address autocomplete)
 ```
 
 ## Running locally
@@ -117,6 +117,10 @@ load after that can take about a minute.
 - Amsterdam: [Housing Prices in Amsterdam (Kaggle)](https://www.kaggle.com/datasets/thomasnibb/amsterdam-house-price-prediction)
 - New York: [New York Housing Market (Kaggle)](https://www.kaggle.com/datasets/nelgiriyewithana/new-york-housing-market)
 - Paris: [DVF géolocalisées (data.gouv.fr)](https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/), Paris (département 75), 2025
+
+## Credits
+
+- Fonts: [Uni Sans](https://www.fontfabric.com/) by Fontfabric, Gilroy by Radomir Tinkov
 
 ## Tech stack
 

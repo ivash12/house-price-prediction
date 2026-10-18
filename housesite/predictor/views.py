@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from predictor.ml import CITIES, predict_price, is_inside_city
 
 CURRENCY = {"amsterdam": "€", "new-york": "$", "paris": "€"}
@@ -43,4 +43,5 @@ def home(request):
 
 
 def about(request):
-    return render(request, "predictor/about.html")
+    # About is now a section on the home page; keep old /about/ links working
+    return redirect("/#about")

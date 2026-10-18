@@ -1,42 +1,94 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>House Price Estimator</title>
+    <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
 </head>
-<style>
-    body {
-        text-align: center;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-    body {
-    font-size: 20px;
-    }
-    h1 {
-        font-size: 48px;
-    }
-    li {
-        font-size: 24px;
-        margin: 10px 0;
-    }
-    .about-link {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-    }
-</style>
 <body>
-    <a href="/about/" class="about-link">About</a>
-    <h1>House Price Estimator</h1>
-    <p>Choose a city to get a price estimate:</p>
+    <section class="home-top">
+        <div class="hero">
+            <img class="hero-layer hero-sky" src="{% static 'predictor/img/hero-sky.webp' %}" alt="">
+            <div class="hero-title">
+                <h1 class="heading">House Price Estimator</h1>
+            </div>
+            <img class="hero-layer hero-city" src="{% static 'predictor/img/hero-city.webp' %}" alt="New York skyline at sunset">
+            <p class="hero-subtitle">Estimate Your Property Value in Seconds</p>
 
-    <ul>
-        <li><a href="/amsterdam/">Amsterdam</a></li>
-        <li><a href="/new-york/">New York City</a></li>
-        <li><a href="/paris/">Paris</a></li>
-    </ul>
+            <a class="hero-about" href="#about">About</a>
+            <a class="pill-button hero-cta" href="#cities">Choose a city</a>
+        </div>
+    </section>
+
+    <section class="home-bottom" style="--blur-image: url('{% static 'predictor/img/bg-paris.webp' %}')">
+        <div class="cities" id="cities">
+            <a class="city-card" href="/amsterdam/">
+                <img src="{% static 'predictor/img/card-amsterdam.webp' %}" alt="Canal houses in Amsterdam">
+                <div class="city-card-text">
+                    <h2 class="heading">Amsterdam</h2>
+                    <p>Historic canal houses and cozy European living.</p>
+                </div>
+                <span class="city-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <a class="city-card" href="/paris/">
+                <img src="{% static 'predictor/img/card-paris.webp' %}" alt="The Seine and the Eiffel Tower in Paris">
+                <div class="city-card-text">
+                    <h2 class="heading">Paris</h2>
+                    <p>Classic architecture and prestigious city apartments.</p>
+                </div>
+                <span class="city-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <a class="city-card" href="/new-york/">
+                <img src="{% static 'predictor/img/card-new-york.webp' %}" alt="A street in Manhattan, New York">
+                <div class="city-card-text">
+                    <h2 class="heading">New-York</h2>
+                    <p>Iconic skyscrapers and fast-paced luxury real estate.</p>
+                </div>
+                <span class="city-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+        </div>
+
+        <div class="about" id="about">
+            <h2 class="heading">About</h2>
+            <p>
+                This is a learning project. It estimates property prices with neural networks built in TensorFlow.<br>
+                Pick a city, enter a few details about a home, and choose its address.<br>
+                The model returns an estimated price based on similar properties in its training data.
+            </p>
+
+            <hr>
+
+            <h2 class="heading">What the estimates are based on</h2>
+            <ul>
+                <li>Amsterdam: about 900 listings from 2021 (asking prices), adjusted upward to roughly match today's market.</li>
+                <li>New York City: a few thousand listings from a public dataset.</li>
+                <li>Paris: about 30,000 apartment sales from 2025, taken from official French government records.</li>
+            </ul>
+
+            <hr>
+
+            <h2 class="heading">Please read before using the numbers</h2>
+            <p>
+                These estimates are rough and should not be used to buy, sell or value a real property.
+                The datasets are limited. The models only know a property's size, rooms and location, not its condition, floor,
+                view, renovation or the current market. A typical estimate can be off by 10&ndash;20% or more, depending on the city.
+                For a real valuation, ask a licensed agent or appraiser.
+            </p>
+        </div>
+
+        <p class="credits">
+            Uni Sans font by <a href="https://www.fontfabric.com/" target="_blank" rel="noopener">Fontfabric</a>
+        </p>
+    </section>
 </body>
 </html>
