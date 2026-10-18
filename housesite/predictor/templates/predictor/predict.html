@@ -63,7 +63,7 @@
 
             <label for="location-search">Address:</label>
             <div class="search-wrapper">
-                <input type="text" id="location-search" data-city="{{ city }}" placeholder="Start typing an address..." autocomplete="off">
+                <input type="text" id="location-search" name="address" value="{{ form_data.address }}" data-city="{{ city }}" placeholder="Start typing an address..." autocomplete="off">
                 <div id="suggestions"></div>
             </div>
             <input type="hidden" id="lat" name="lat" value="{{ form_data.lat }}">

@@ -66,7 +66,7 @@ house-price-prediction/
 Requires Python 3.14 (the version this project was built with).
 
 ```bash
-git clone https://github.com/<your-username>/house-price-prediction.git
+git clone https://github.com/ivash12/house-price-prediction.git
 cd house-price-prediction
 python -m venv .venv
 .venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
