@@ -1,0 +1,457 @@
+/* ---------- Fonts ---------- */
+@font-face {
+    font-family: "Uni Sans";
+    src: url("../fonts/unisans-heavy.woff") format("woff");
+    font-weight: 900;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("../fonts/gilroy-light.woff") format("woff");
+    font-weight: 300;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("../fonts/gilroy-extrabold.woff") format("woff");
+    font-weight: 800;
+    font-display: swap;
+}
+
+/* ---------- Base ---------- */
+:root {
+    --bg: #0c161b;
+    --panel: #161d24;
+    --line: rgba(255, 255, 255, 0.7);
+    --text: #ffffff;
+    --muted: rgba(255, 255, 255, 0.7);
+    --dark-text: #12191f;
+    --error: #ff8a80;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Gilroy", Arial, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.heading {
+    font-family: "Uni Sans", "Arial Black", sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* White pill button (Choose a city / Estimate price) */
+.pill-button {
+    display: inline-block;
+    padding: 16px 64px;
+    border: 3px solid #5b4a43;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--dark-text);
+    font-family: "Gilroy", Arial, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+.pill-button:hover { transform: translateY(-2px); }
+
+/* =================================================================
+   HOME PAGE
+   ================================================================= */
+
+.home-top {
+    padding: 42px 4.5% 72px;
+}
+
+.hero {
+    position: relative;
+    max-width: 1100px;
+    height: clamp(380px, 38vw, 575px);
+    margin: 0 auto;
+    border: 1.5px solid var(--line);
+    border-radius: 64px;
+    overflow: visible;
+    container-type: inline-size;
+}
+
+/* the photo is split into two layers so the title sits between the sky and the buildings */
+.hero-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 28%;
+    border-radius: 63px;
+}
+.hero-sky { z-index: 0; }
+.hero-city { z-index: 2; pointer-events: none; }
+
+.hero-title {
+    position: absolute;
+    z-index: 1;
+    top: 22%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0 20px;
+}
+.hero-title h1 {
+    font-size: 7.1cqw;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+/* the subtitle sits in front of the buildings, so it is a separate layer */
+.hero-subtitle {
+    position: absolute;
+    z-index: 3;
+    top: calc(22% + 7.9cqw);
+    left: 0;
+    right: 0;
+    margin: 0;
+    text-align: center;
+    font-size: max(13px, 2.15cqw);
+}
+
+.hero-about {
+    position: absolute;
+    z-index: 3;
+    top: 26px;
+    left: 68px;
+    font-size: 17px;
+}
+
+/* "Choose a city": the dark ring cuts a notch into the bottom of the hero */
+.hero-cta {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    border-radius: 999px;
+    box-shadow: 0 0 0 16px var(--bg);
+    white-space: nowrap;
+}
+.hero-cta:hover { transform: translate(-50%, calc(50% - 2px)); }
+
+/* ---------- Lower section with blurred photo ---------- */
+.home-bottom {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    padding: 80px 4.5% 60px;
+}
+.home-bottom::before {
+    content: "";
+    position: absolute;
+    inset: -40px;
+    background: var(--blur-image) center / cover no-repeat;
+    filter: blur(18px) brightness(0.4);
+    z-index: 0;
+}
+.home-bottom > * { position: relative; z-index: 1; }
+
+.cities {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 46px;
+    max-width: 1050px;
+    margin: 0 auto;
+    scroll-margin-top: 30px;
+}
+
+.city-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 320 / 460;
+    border: 1.5px solid var(--line);
+    border-radius: 22px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+.city-card:hover { transform: translateY(-6px); }
+
+.city-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.city-card::after {
+    /* dark fade at the bottom so the text stays readable */
+    content: "";
+    position: absolute;
+    inset: 55% 0 0 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55));
+}
+
+.city-card-text {
+    position: absolute;
+    z-index: 1;
+    left: 22px;
+    right: 90px;
+    bottom: 22px;
+}
+.city-card-text .heading {
+    font-size: 30px;
+    line-height: 1;
+}
+.city-card-text p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    line-height: 1.15;
+}
+
+.city-arrow {
+    position: absolute;
+    z-index: 1;
+    right: 22px;
+    bottom: 22px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.city-arrow svg { width: 30px; height: 30px; }
+
+/* ---------- About ---------- */
+.about {
+    max-width: 1085px;
+    margin: 120px auto 0;
+    padding: 40px 10% 44px;
+    background: var(--panel);
+    border: 1.5px solid var(--line);
+    border-radius: 64px;
+    text-align: center;
+    scroll-margin-top: 30px;
+}
+.about .heading {
+    font-size: 28px;
+    margin-bottom: 14px;
+}
+.about p,
+.about ul {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+}
+.about ul {
+    list-style: none;
+    padding: 0;
+}
+.about ul li::before { content: "• "; }
+.about hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 40px 0 42px;
+}
+
+.credits {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* =================================================================
+   CITY PAGE
+   ================================================================= */
+
+.stage {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 105px 20px 28px;
+}
+
+/* big round photo behind the form, cut off at the top */
+.stage-circle {
+    --d: max(104vw, 125vh);
+    position: absolute;
+    z-index: 0;
+    width: var(--d);
+    height: var(--d);
+    left: 50%;
+    top: calc(83vh - var(--d));
+    transform: translateX(-50%);
+    border-radius: 50%;
+    object-fit: cover;
+    filter: brightness(0.45);
+}
+
+.stage > *:not(.stage-circle) { position: relative; z-index: 1; }
+
+.title-pill {
+    max-width: 715px;
+    width: 100%;
+    padding: 30px 40px 22px;
+    background: var(--panel);
+    border: 2px solid #e8ddd5;
+    border-radius: 999px;
+    text-align: center;
+}
+.title-pill .heading {
+    font-size: clamp(20px, 2.35vw, 34px);
+    line-height: 1.05;
+}
+.title-pill p {
+    margin: 6px 0 0;
+    font-size: clamp(16px, 1.8vw, 25px);
+    line-height: 1.3;
+}
+
+.estimate-form {
+    width: 100%;
+    max-width: 700px;
+    margin-top: 38px;
+    text-align: center;
+}
+.estimate-form h2,
+.result h2 {
+    font-weight: 800;
+    font-size: 34px;
+    margin: 0 0 16px;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+.field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 56px;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 685px;
+}
+.field {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.field label {
+    font-size: 28px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    white-space: nowrap;
+}
+.field input {
+    height: 39px;
+    width: 167px;
+    border: none;
+    border-radius: 999px;
+    padding: 0 18px;
+    font-family: "Gilroy", Arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--dark-text);
+    background: #ffffff;
+    outline: none;
+}
+.field input::placeholder {
+    font-style: italic;
+    color: #3a3f44;
+}
+.field input:focus { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35); }
+
+.field-address { flex: 1; }
+.field-address .search-wrapper { flex: 1; position: relative; }
+.field-address input { width: 100%; }
+
+#suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    color: var(--dark-text);
+    border-radius: 18px;
+    overflow: hidden;
+    text-align: left;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+#suggestions:empty { display: none; }
+#suggestions div {
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#suggestions div:hover { background: #eef1f3; }
+
+.submit-row { margin-top: 28px; }
+.submit-row .pill-button {
+    font-size: 24px;
+    padding: 12px 48px;
+}
+
+.result {
+    margin-top: 36px;
+    text-align: center;
+}
+.result .price {
+    font-family: "Uni Sans", "Arial Black", sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    margin: 0;
+}
+.result .error {
+    color: var(--error);
+    font-size: 20px;
+    margin: 0;
+}
+
+.back-link {
+    margin-top: auto;
+    padding-top: 40px;
+    align-self: flex-start;
+    font-size: 24px;
+    text-decoration: none;
+}
+.back-link span {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+}
+
+/* =================================================================
+   SMALL SCREENS
+   ================================================================= */
+@media (max-width: 860px) {
+    .cities { grid-template-columns: 1fr; max-width: 360px; }
+    .hero { border-radius: 36px; }
+    .hero-layer { border-radius: 35px; }
+    .hero-about { left: 30px; }
+    .pill-button { font-size: 22px; padding: 12px 36px; }
+    .about { border-radius: 36px; padding: 32px 22px; }
+    .title-pill { border-radius: 40px; padding: 26px 24px 18px; }
+    .field-row { justify-content: center; gap: 12px; }
+    .field label { font-size: 22px; }
+    .field-address { flex-basis: 100%; }
+    .back-link { font-size: 20px; }
+}
